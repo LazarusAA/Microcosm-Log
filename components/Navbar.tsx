@@ -29,7 +29,15 @@ const Navbar = () => {
           {/* Logo and Brand */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              {/* You can add a logo image here */}
+              <div className="w-8 h-8 mr-2">
+                <Image 
+                  src="/images/logo.svg"
+                  alt="Microcosm Log Logo"
+                  width={32}
+                  height={32}
+                  priority
+                />
+              </div>
               <span className="text-xl font-medium text-blue-400">Microcosm Log</span>
             </Link>
           </div>

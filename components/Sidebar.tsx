@@ -62,6 +62,17 @@ const Sidebar = ({ user, loading, signIn, signOut }: SidebarProps) => {
         </button>
         <div className={`ml-2 overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}>
           <Link href="/" className="flex items-center">
+            {!isCollapsed && (
+              <div className="w-7 h-7 mr-2 flex-shrink-0">
+                <Image 
+                  src="/images/logo.svg"
+                  alt="Microcosm Log Logo"
+                  width={28}
+                  height={28}
+                  priority
+                />
+              </div>
+            )}
             <span className="text-xl font-medium text-blue-400 whitespace-nowrap transition-opacity duration-200 ease-in-out">
               {textVisible && "Microcosm Log"}
             </span>
