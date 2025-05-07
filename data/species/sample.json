@@ -1,0 +1,68 @@
+[
+  {
+    "id": "1",
+    "name": "Water Bear",
+    "scientific_name": "Tardigrade",
+    "description": "Tardigrades, known colloquially as water bears or moss piglets, are a phylum of eight-legged segmented micro-animals. They are known for their ability to survive in extreme environments that would be fatal to most life forms.",
+    "habitat": "Tardigrades are found in a variety of environments, from the deep sea to mountaintops, and from tropical rainforests to the Antarctic.",
+    "category": "microorganisms",
+    "image_url": "/images/tardigrade.jpg",
+    "created_at": "2023-01-01T00:00:00Z",
+    "updated_at": "2023-01-01T00:00:00Z"
+  },
+  {
+    "id": "2",
+    "name": "Diatom",
+    "scientific_name": "Bacillariophyceae",
+    "description": "Diatoms are a major group of algae and are among the most common types of phytoplankton. They are unicellular organisms with unique cell walls made of silica (hydrated silicon dioxide).",
+    "habitat": "Diatoms are found in the oceans, freshwater, soils, and on damp surfaces. They are especially important in oceans, where they are estimated to contribute up to 45% of the total oceanic primary production.",
+    "category": "algae",
+    "image_url": "/images/diatom.jpg",
+    "created_at": "2023-01-02T00:00:00Z",
+    "updated_at": "2023-01-02T00:00:00Z"
+  },
+  {
+    "id": "3",
+    "name": "Rotifer",
+    "scientific_name": "Rotifera",
+    "description": "Rotifers are microscopic aquatic animals that make up the phylum Rotifera. They are characterized by a rotating wheel of cilia at their head, which is used for locomotion and feeding.",
+    "habitat": "Rotifers are common in freshwater environments throughout the world; a few species are found in saltwater.",
+    "category": "microorganisms",
+    "image_url": "/images/rotifer.jpg",
+    "created_at": "2023-01-03T00:00:00Z",
+    "updated_at": "2023-01-03T00:00:00Z"
+  },
+  {
+    "id": "4",
+    "name": "Bread Mold",
+    "scientific_name": "Rhizopus stolonifer",
+    "description": "A common mold that grows on bread and other food items. It's characterized by its fluffy white or gray appearance with black spore-bearing structures.",
+    "habitat": "Found on decaying organic matter, particularly bread and fruits.",
+    "category": "fungi",
+    "image_url": "/images/bread-mold.jpg",
+    "created_at": "2023-01-04T00:00:00Z",
+    "updated_at": "2023-01-04T00:00:00Z"
+  },
+  {
+    "id": "5",
+    "name": "Amoeba",
+    "scientific_name": "Amoeba proteus",
+    "description": "A single-celled organism that constantly changes shape as it moves and feeds. It uses pseudopodia, temporary extensions of the cell, to capture food and move.",
+    "habitat": "Found in freshwater environments like ponds, lakes, and slow-moving streams.",
+    "category": "protozoa",
+    "image_url": "/images/amoeba.jpg",
+    "created_at": "2023-01-05T00:00:00Z",
+    "updated_at": "2023-01-05T00:00:00Z"
+  },
+  {
+    "id": "6",
+    "name": "E. coli",
+    "scientific_name": "Escherichia coli",
+    "description": "A gram-negative, rod-shaped bacterium commonly found in the lower intestine of warm-blooded organisms. Most strains are harmless, but some can cause food poisoning in humans.",
+    "habitat": "Primarily found in the intestines of humans and animals, but can also survive in the environment.",
+    "category": "bacteria",
+    "image_url": "/images/ecoli.jpg",
+    "created_at": "2023-01-06T00:00:00Z", 
+    "updated_at": "2023-01-06T00:00:00Z"
+  }
+] 
