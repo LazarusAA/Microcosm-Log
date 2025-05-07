@@ -1,0 +1,13 @@
+{
+    "slug": "paramecium-caudatum",
+    "scientific_name": "Paramecium caudatum",
+    "common_name": "Slipper Animalcule",
+    "type": "protist",
+    "description": "A common ciliate found in freshwater environments...",
+    "habitat": "Still freshwater ponds, canals, ditches",
+    "tags": ["freshwater", "ciliate"],
+    "extra_data": {
+      "spore_info": "none",
+      "feeding_type": "heterotrophic"
+    }
+  }
