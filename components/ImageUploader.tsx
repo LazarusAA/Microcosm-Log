@@ -58,4 +58,30 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ userId, bucket, onUpload,
   )
 }
 
+/* EXAMPLE USAGE
+
 export default ImageUploader
+
+import ImageUploader from '@/components/ImageUploader'
+import { useUser } from '@/hooks/useUser'
+
+const ObservationForm = () => {
+  const user = useUser()
+
+  const handleUpload = (publicUrl: string, path: string) => {
+    console.log('Image uploaded to:', publicUrl)
+    // Save `publicUrl` or `path` to Supabase `observation_images` table
+  }
+
+  if (!user) return null
+
+  return (
+    <ImageUploader
+      userId={user.id}
+      bucket="observations"
+      onUpload={handleUpload}
+      label="Attach an image to your observation"
+    />
+  )
+} */
+

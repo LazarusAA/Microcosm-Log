@@ -131,17 +131,19 @@ const Layout = ({ children, title = 'Microcosm Log' }: LayoutProps) => {
       )}
       
       {/* Main content */}
-      <main 
-        className={`min-h-screen transition-all duration-300 ${
-          shouldUseNavbar ? '' : 'md:ml-64'
-        }`}
-      >
-        <div className={`px-4 md:px-8 py-6 ${
-          shouldUseNavbar ? 'pt-6' : 'pt-4 md:pt-8'
-        }`}>
-          {children}
-        </div>
-      </main>
+      {isHomePage ? (
+        // For homepage, render children directly without constraints
+        <>{children}</>
+      ) : (
+        // For other pages, apply the sidebar offset and padding
+        <main 
+          className="min-h-screen transition-all duration-300 md:ml-64"
+        >
+          <div className="px-4 md:px-8 py-6 pt-4 md:pt-8">
+            {children}
+          </div>
+        </main>
+      )}
     </div>
   )
 }

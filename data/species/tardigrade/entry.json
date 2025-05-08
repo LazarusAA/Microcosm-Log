@@ -1,0 +1,14 @@
+{
+    "slug": "tardigrade",
+    "scientific_name": "Tardigrada",
+    "common_name": "Water Bear",
+    "type": "micro-animal",
+    "description": "Tardigrades are microscopic, water-dwelling animals known for their incredible resilience to extreme environments, including space, radiation, and high pressures.",
+    "habitat": "Mosses, lichens, leaf litter, soil, and freshwater sediments",
+    "tags": ["extremophile", "microscopic", "resilient"],
+    "extra_data": {
+      "spore_info": "none",
+      "feeding_type": "varied; includes herbivorous, bacterivorous, and carnivorous species"
+    }
+  }
+  
