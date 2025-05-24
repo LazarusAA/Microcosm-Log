@@ -1,119 +1,149 @@
-# 🧬 Microcosm Log — Database Documentation
-
+# 🧬 Microcosm Log — Database Schema  
 _Last updated: May 2025_
 
 ---
 
-## 🧠 Overview
+## 🧠 Overview  
 
-This schema powers **Microcosm Log**, a community-driven platform for documenting fungi and microscopic life. It supports:
+Microcosm Log is a community-driven, **CC-BY** platform for documenting tropical microscopic life (microbes first, fungi module next).  
+Key capabilities ⬇︎
 
-- A curated species guide
-- Community-contributed observations
-- User authentication via Supabase
-- Threaded discussions
-- Image uploads via Supabase Storage
-- Role-based moderation
-
----
-
-## 📁 Tables
-
----
-
-### 🔹 `users`
-
-**Extends Supabase Auth users table** to include profile metadata and roles.
-
-| Field         | Type     | Description                                    |
-|---------------|----------|------------------------------------------------|
-| `id`          | `uuid`   | Primary key, matches `auth.users.id`          |
-| `username`    | `text`   | Unique handle shown publicly                  |
-| `avatar_url`  | `text`   | Profile picture URL                           |
-| `bio`         | `text`   | Short user bio                                |
-| `role`        | `text`   | `'user'` or `'admin'` (default: `'user'`)     |
-| `created_at`  | `timestamp` | Auto-generated                             |
-
-🔐 RLS:
-- Users can view and update their own profile
-- Admins can be used for moderation access
+| ✔︎ | Capability |
+|----|-------------|
+| Curated, searchable species guide |
+| Community-contributed observations **with research-grade metadata** |
+| Supabase Auth (e-mail ➕ optional wallet) |
+| Image storage on Supabase Storage |
+| Threaded discussions & role-based moderation |
+| Row-Level-Security everywhere |
 
 ---
 
-### 🔹 `species_references`
+## 📁 Tables  
 
-**Metadata for curated species entries** (actual content lives in Markdown or JSON files).
+### 1 `users` — profile & roles  
 
-| Field          | Type       | Description                              |
-|----------------|------------|------------------------------------------|
-| `id`           | `uuid`     | Unique ID                                |
-| `slug`         | `text`     | URL slug (e.g. `paramecium-caudatum`)    |
-| `scientific_name` | `text`  | Scientific name                          |
-| `common_name`  | `text`     | Optional common name                     |
-| `type`         | `text`     | `'fungi'`, `'protist'`, `'algae'`, etc.  |
-| `description`  | `text`     | Summary for previews and cards           |
-| `habitat`      | `text`     | Typical growing environment              |
-| `tags`         | `text[]`   | Searchable tags                          |
-| `extra_data`   | `jsonb`    | Optional structured metadata             |
-| `created_at`   | `timestamp`| Auto-generated                           |
+| Field | Type | Notes |
+|-------|------|-------|
+| id | `uuid` PK | mirrors `auth.users.id` |
+| username | `text` UNIQUE | public handle |
+| avatar_url | `text` | profile picture |
+| bio | `text` | |
+| role | `text` | `'user'` (default) \| `'admin'` |
+| created_at | `timestamp` | auto |
 
-📖 Used to display entries in the Logbook section.
+**RLS**
 
----
-
-### 🔹 `species_images`
-
-**One-to-many relationship for curated images per species.**
-
-| Field         | Type     | Description                                |
-|---------------|----------|--------------------------------------------|
-| `id`          | `uuid`   | Primary key                                |
-| `species_id`  | `uuid`   | Foreign key → `species_references(id)`     |
-| `image_url`   | `text`   | Supabase Storage or external URL           |
-| `caption`     | `text`   | Optional image description                 |
-| `created_at`  | `timestamp` | Auto-generated                          |
+* users read / update **their own** row  
+* admins have extra “ALL” policy
 
 ---
 
-### 🔹 `observations`
+### 2 `species_references` — curated guide  
 
-**User-submitted field notes and media about a species.**
+| Field | Type | Notes |
+|-------|------|-------|
+| id | `uuid` PK |
+| slug | `text` | e.g. `paramecium-caudatum` |
+| scientific_name | `text` |
+| common_name | `text` NULL |
+| type | `text` | `'protist'`, `'algae'`, `'fungi'`, … |
+| description | `text` |
+| habitat | `text` |
+| tags | `text[]` |
+| extra_data | `jsonb` |
+| created_at | `timestamp` |
 
-| Field            | Type     | Description                              |
-|------------------|----------|------------------------------------------|
-| `id`             | `uuid`   | Primary key                              |
-| `user_id`        | `uuid`   | Foreign key → `users(id)`                |
-| `species_id`     | `uuid`   | Foreign key → `species_references(id)`   |
-| `note`           | `text`   | Field note or description                |
-| `location`       | `text`   | Text-based location                      |
-| `latitude`       | `double precision` | Optional geolocation            |
-| `longitude`      | `double precision` | Optional geolocation            |
-| `microscope_used`| `text`   | Optional microscope model or method      |
-| `is_approved`    | `boolean`| Defaults to `false`                      |
-| `created_at`     | `timestamp` | Auto-generated                        |
-
-🔐 RLS:
-- Public can read **approved** observations
-- Users can view/edit/delete their own
-- Admins can approve observations
+_Public read-only._
 
 ---
 
-### 🔹 `observation_images`
+### 3 `species_images` — 1-N with species  
 
-**Images attached to a user observation.**
+| Field | Type | Notes |
+|-------|------|-------|
+| id | `uuid` PK |
+| species_id | `uuid` FK → `species_references.id` |
+| image_url | `text` |
+| caption | `text` NULL |
+| created_at | `timestamp` |
 
-| Field            | Type     | Description                              |
-|------------------|----------|------------------------------------------|
-| `id`             | `uuid`   | Primary key                              |
-| `observation_id` | `uuid`   | Foreign key → `observations(id)`         |
-| `image_url`      | `text`   | Path to image in Supabase Storage        |
-| `caption`        | `text`   | Optional image description               |
-| `created_at`     | `timestamp` | Auto-generated                        |
+_Public read-only._
 
 ---
 
-### 🔹 `threads`
+### 4 `observations` — crowd data  
+
+| Field | Type | Notes |
+|-------|------|-------|
+| id | `uuid` PK |
+| user_id | `uuid` FK → `users.id` |
+| species_id | `uuid` FK → `species_references.id` |
+| note | `text` |
+| sample_date | `date` |
+| location | `text` |
+| latitude | `double precision` NULL |
+| longitude | `double precision` NULL |
+| geom | `geography(Point,4326)` NULL |
+| magnification | `integer` NULL |
+| imaging_method | `text` NULL | `'brightfield'`, `'phase'`, … |
+| microscope_used | `text` NULL |
+| is_approved | `boolean` DEFAULT `false` |
+| created_at | `timestamp` |
+
+_Index_: `observations_geom_idx` (GIST on `geom`)
+
+**RLS**
+
+| Action | Allowed |
+|--------|---------|
+| SELECT | public **if** `is_approved = true` _or_ owner |
+| INSERT | owner |
+| UPDATE / DELETE | owner · admins can set `is_approved = true` |
+
+---
+
+### 5 `observation_images` — files per observation  
+
+| Field | Type | Notes |
+|-------|------|-------|
+| id | `uuid` PK |
+| observation_id | `uuid` FK → `observations.id` |
+| image_url | `text` |
+| caption | `text` NULL |
+| license | `text` DEFAULT `'CC-BY-4.0'` |
+| sha256 | `text` NULL | content hash |
+| ipfs_cid | `text` NULL | future provenance |
+| created_at | `timestamp` |
+
+_Public read · insert by owner._
+
+---
+
+### 6 `observation_votes` — crowd QA  
+
+| Field | Type | Notes |
+|-------|------|-------|
+| id | `uuid` PK `DEFAULT gen_random_uuid()` |
+| observation_id | `uuid` FK → `observations.id` `ON DELETE CASCADE` |
+| user_id | `uuid` FK → `users.id` `ON DELETE CASCADE` |
+| vote | `smallint` CHECK (-1, 1) |
+| created_at | `timestamp` DEFAULT `now()` |
+
+UNIQUE (observation_id, user_id) → one vote per user.
+
+**RLS**
+
+| Action | Condition |
+|--------|-----------|
+| SELECT | `TRUE` |
+| INSERT | `auth.uid() = user_id` |
+| UPDATE | `auth.uid() = user_id` |
+| DELETE | admin policy only |
+
+---
+
+### 7 `threads`
 
 **Community discussion threads.**
 
@@ -128,7 +158,7 @@ This schema powers **Microcosm Log**, a community-driven platform for documentin
 
 ---
 
-### 🔹 `thread_replies`
+### 8 `thread_replies`
 
 **Replies to discussion threads.**
 
@@ -142,7 +172,7 @@ This schema powers **Microcosm Log**, a community-driven platform for documentin
 
 ---
 
-### 🔹 `admin_flags`
+### 9 `admin_flags`
 
 **Moderation system for reporting problematic content.**
 
@@ -157,28 +187,29 @@ This schema powers **Microcosm Log**, a community-driven platform for documentin
 
 ---
 
-## 🔐 RLS Summary
+## 🔐 RLS Matrix  
 
-| Table                | Insert | Read                     | Update/Delete              |
-|---------------------|--------|--------------------------|----------------------------|
-| `users`             | ❌     | own only                 | own only                   |
-| `species_references`| ❌     | ✅ (public)              | ❌                         |
-| `species_images`    | ❌     | ✅ (public)              | ❌                         |
-| `observations`      | ✅     | if approved or own       | own / admin-only approval  |
-| `observation_images`| ✅     | ✅                        | ❌                         |
-| `threads`           | ✅     | ✅                        | own                        |
-| `thread_replies`    | ✅     | ✅                        | own                        |
-| `admin_flags`       | ✅     | admin only               | ❌                         |
+| Table | Insert | Read | Update | Delete |
+|-------|--------|------|--------|--------|
+| users | – | own | own | – |
+| species_references | – | ✅ | – | – |
+| species_images | – | ✅ | – | – |
+| observations | ✅ | approved ∨ own | own ∨ admin | own ∨ admin |
+| observation_images | ✅ | ✅ | – | – |
+| observation_votes | ✅(own) | ✅ | own | admin |
+| threads | ✅ | ✅ | own | own |
+| thread_replies | ✅ | ✅ | own | own |
+| admin_flags | ✅ | admin | – | – |
 
 ---
 
-## 🪣 Storage Buckets
+## 🪣 Storage Buckets  
 
-| Bucket Name     | Access   | Purpose                                      |
-|------------------|----------|----------------------------------------------|
-| `observations`   | Private  | User-contributed observation images          |
-| `species`        | Public   | Curated, admin-uploaded species images       |
-| `avatars`        | Public   | Optional user profile pictures               |
+| Bucket | ACL | Purpose |
+|--------|-----|---------|
+| `observations` | **Private** | raw crowd images |
+| `species` | **Public** | curated reference images |
+| `avatars` | **Public** | user pics |
 
 ---
 
@@ -191,4 +222,4 @@ This schema powers **Microcosm Log**, a community-driven platform for documentin
 
 ---
 
-
+Questions? ping @LazarusAA — happy to onboard contributors!
